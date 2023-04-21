@@ -85,13 +85,39 @@ for category_name, category_href in all_hrefs.items():
             )
 
         animals_dog_data = soup.find(class_="menu__lists menu__lists--filtered menu__lists--dog").find_all("a")
+        animals_dog_data_catalog = []
+        animals_dog_data_catalog_json = []
         for item in animals_dog_data:
-            animals_dog_data_catalog = item.text
-            print(animals_dog_data_catalog)
+            animals_dog_data_catalog.append(item.text)
 
+        animals_dog = animals_dog_data_catalog[0]
+        animals_cat = animals_dog_data_catalog[1]
+        animals_bird = animals_dog_data_catalog[2]
+        animals_fish = animals_dog_data_catalog[3]
 
+        animals_dog_data_catalog_json.append({
+            "Catalog_for_dog": animals_dog,
+            "Catalog_for_cat": animals_cat,
+            "Catalog_for_bird": animals_bird,
+            "Catalog_for_rodent": "в процессе создания",
+            "Catalog_for_fish": animals_fish,
 
+        })
 
+        with open(f"date/{count}_{category_name}.csv", "a", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                (
+                    animals_dog,
+                    animals_cat,
+                    animals_bird,
+                    animals_rodent == "-",
+                    animals_fish
+                )
+            )
+
+        with open(f"date/{count}_{category_name}.json", "a", encoding="utf-8") as file:
+            json.dump(animals_dog_data_catalog_json, file, indent=4, ensure_ascii=False)
 
         count+=1
 
